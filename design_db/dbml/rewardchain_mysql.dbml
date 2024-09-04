@@ -1,0 +1,154 @@
+Project Rewardchain {
+  database_type: 'MySQL'
+  Note: '''
+    # Rewardchain Database
+    **markdown content here**
+    https://dbdocs.io/docs
+    https://github.com/infinith4/web3_agreements
+  '''
+}
+
+
+// new_task : new task, not start
+// processing : started
+// review : review of client
+// completed : done task
+// pending : pending
+// cancelled : not completed by supplier
+Enum type_task_status {
+  new_task
+  processing
+  review
+  completed
+  pending
+  cancelled
+}
+
+
+// dispute : new dispute, not start
+// processing : started
+// validated : review of arbitrator
+// completed : done validation
+Enum type_validation_status {
+  dispute
+  processing
+  validated
+  completed
+}
+
+Enum type_user_class {
+  client
+  supplier
+  arbitrator
+  patron
+}
+
+Table tasks {
+  id integer [pk, increment]
+  user_id integer [not null, note: "on-chain"]
+  status type_task_status [note: "on-chain"]
+  title varchar [note: "on-chain"]
+  description varchar [note: "on-chain"]
+  supplier_id integer [not null, note: "on-chain"]
+  comment_id integer [note: "on-chain"]
+  due_date datetime [note: "on-chain"]
+  created_at datetime [not null, default: `now()`]
+  updated_at datetime
+  Indexes {
+    id [unique, name: "ui_tasks_id"]
+    comment_id [name: "idx_task_items_comment_id"]
+  }
+}
+
+Table task_comments {
+  id integer [pk, increment, note: "on-chain"]
+  task_id integer [not null, note: "on-chain"]
+  coomment varchar [note: "on-chain"]
+  created_at datetime [not null, default: `now()`]
+  updated_at datetime
+  Indexes {
+    task_id [name: "idx_task_comments_task_id"]
+  }
+}
+
+Table task_items {
+  id integer [pk, increment, note: "on-chain"]
+  task_id integer [not null, note: "on-chain"]
+  user_id integer [not null, note: "on-chain"]
+  status type_task_status [note: "on-chain"]
+  title varchar [note: "on-chain"]
+  description varchar [note: "on-chain"]
+  supplier_id integer [not null, note: "on-chain"]
+  comment_id integer [note: "on-chain"]
+  due_date datetime [note: "on-chain"]
+  created_at datetime [not null, default: `now()`]
+  updated_at datetime
+  Indexes {
+    id [unique, name: "ui_task_items_id"]
+    task_id [name: "idx_task_items_task_id"]
+  }
+}
+
+Table users {
+  id integer [pk]
+  user_type type_user_class
+  first_name varchar
+  last_name varchar
+  username varchar [not null, unique]
+  email varchar [not null, unique]
+  hashed_password varchar [note: 'Hashed password']
+  avatar_url varchar
+  last_login_at datetime [not null, default: `now()`]
+  created_at datetime [not null, default: `now()`]
+  updated_at datetime
+  Indexes {
+    id [unique, name: "ui_users_id"]
+  }
+  note: "table 'users' contains user information"
+}
+
+//公開しても良い情報だが、公開されたら残り続けるので off-chain で保存
+Table profiles {
+  id integer [pk]
+  user_id integer
+  specification varchar //自分のできることをアピールする
+  bio varchar //経歴
+  website varchar  //websiteのURL
+  email varchar
+  created_at datetime [not null, default: `now()`]
+  updated_at datetime
+  Indexes {
+    id [unique, name: "ui_profiles_id"]
+    user_id [unique, name: "idx_profiles_user_id"]
+  }
+}
+
+//client or supplier による disputeの内容
+//arbitrator  による検証が必要
+//user_id: client　or suppier のid
+Table disputations {
+  id integer [pk, note: "on-chain"]
+  task_id integer [note: "on-chain"]
+  status type_validation_status [note: "on-chain"]
+  title varchar [note: "on-chain"]
+  description varchar [note: "on-chain"]
+  user_id integer [not null, note: "on-chain"]
+  arbitrator_id integer [note: "on-chain"]
+  created_at datetime [not null, default: `now()`]
+  updated_at datetime
+  Indexes {
+    id [unique, name: "ui_disputations_id"]
+    user_id [name: "idx_disputations_user_id"]
+  }
+}
+
+//外部キーの命名規則: fk_[参照元テーブル]_[参照元カラム]_[参照先テーブル]_[参照先カラム]
+Ref "fk_task_comments_id_tasks_id" : task_comments.task_id > tasks.id [update: no action, delete: no action]
+Ref "fk_task_items_id_tasks_id" : task_items.task_id > tasks.id [update: no action, delete: no action]
+// Ref "fk_clients_id_users_id" : clients.task_id - users.id [update: no action, delete: no action]
+// Ref "fk_suppliers_id_users_id" : suppliers.task_id - users.id [update: no action, delete: no action]
+// Ref "fk_arbitrator_id_users_id" : suppliers.task_id - users.id [update: no action, delete: no action]
+// Ref "fk_patron_id_users_id" : suppliers.task_id - users.id [update: no action, delete: no action]
+Ref "fk_profiles_user_id_users_id" : profiles.user_id - users.id [update: no action, delete: no action]
+Ref "fk_disputations_task_id_tasks_id" : disputations.task_id - tasks.id [update: no action, delete: no action]
+Ref "fk_tasks_id_users_id" : tasks.id > users.id [update: no action, delete: no action]

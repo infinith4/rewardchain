@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@dbml/cli": "^3.4.3",
+    "dbdocs": "^0.12.0"
+  }
+}

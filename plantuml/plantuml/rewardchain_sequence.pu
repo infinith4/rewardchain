@@ -1,0 +1,93 @@
+@startuml web3_agreements_sequence
+participant Client as client
+participant System as system
+participant Supplier as supplier
+
+supplier -> system: Spec を記載する
+activate system
+return 
+
+
+activate client
+autonumber 10 10 "<b>[000]"
+
+alt 特定の Task
+  client -> system: 特定の Task を作成する
+  activate system
+  return 
+else 時間単位での Task
+  client -> system: 時間単位での Task を依頼する(Tier)
+  activate system
+  return 
+else 曖昧な Task
+  client -> system: 曖昧な仕事の依頼
+  activate system
+  return 
+
+  supplier -> system: Supplierより草案提出(A)
+  activate system
+  return 
+end
+
+
+activate client
+client -> system: 資金を Pool　する
+system -> system: 資金を Lock　する
+client -> supplier: Task を依頼する
+activate supplier
+supplier -> supplier: Task を処理する
+
+loop
+  alt Task を完了した
+    supplier -> system:  Task の処理結果を提出する
+    activate system
+    system -> client:  Task の処理結果を提出する
+    activate client
+    return
+    return Pool していたclient の資金を 送金
+      alt client が Task を完了とした
+        supplier -> system:  Task の処理結果を提出する
+        activate system
+        system -> client:  Task の処理結果を提出する
+        activate client
+        return
+        return Pool していたclient の資金を 送金
+      else client が Task を未完了とした
+        supplier -> client: Task を未完了部分の処理結果を提出する
+          alt 途中で見積もり以上の Task をした
+          supplier -> system: 途中で見積もり以上の Task をしたのでDisputeする
+          
+          end
+      end
+  else Task を途中で断念した
+  supplier -> system:  Task を途中で断念した旨を連絡する
+  system -> client:  Task を途中で断念した旨を連絡する
+  else 期限切れ
+  system -> supplier:  Task が期限切れである旨を連絡する
+  system -> client:  Task が期限切れである旨を連絡する
+  system -> client: Lock された資金 が返金される
+  end
+end
+
+
+deactivate supplier
+
+
+participant Arbitrator as arbitrator
+participant Patron as patron
+
+system -> arbitrator: Dispute の検証を依頼する
+activate arbitrator
+arbitrator -> arbitrator: Dispute を検証
+arbitrator -> system: Dispute の検証結果と資金配分を決める
+system -> client: 配分された資金が送金される
+system -> supplier: 配分された資金が送金される
+system -> arbitrator: 報酬を得る
+return 
+
+activate patron
+patron -> system: 資金を Pool する
+activate system
+return 何らかの配分によって投資額の数％を得られる
+@enduml
+
