@@ -1,0 +1,31 @@
+@startuml sample01
+
+title AWS Simple serverless architecture
+left to right direction
+
+' ① アイコンの定義 ＆ インポート
+!define AWSPuml https://github.com/plantuml-stdlib/Azure-PlantUML/blob/master/AzureSymbols.md
+
+!includeurl AWSPuml/AWSCommon.puml
+!includeurl AWSPuml/General/Client.puml
+!includeurl AWSPuml/GroupIcons/Cloudalt.puml
+!includeurl AWSPuml/ApplicationIntegration/APIGateway.puml
+!includeurl AWSPuml/Compute/Lambda.puml
+!includeurl AWSPuml/Database/DynamoDB.puml
+!includeurl AWSPuml/AWSSimplified.puml
+
+' ② 利用するアイコンを宣言
+Client(clientUser, User, User client device)
+
+Cloudalt(aws, AWS, AWS) {
+  APIGateway(apiGateway, "API Gateway", "API Gateway")
+  Lambda(lambda, "Lambda", "Lambda")
+  DynamoDB(dynamodb, "DynamoDB", "DynamoDB")
+}
+
+' ③ アイコンの関係を記述
+clientUser 0--> apiGateway: Send HTTPS request
+apiGateway 0--> lambda: Invoke function
+lambda 0--> dynamodb: Put item
+
+@enduml

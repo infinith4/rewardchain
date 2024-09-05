@@ -1,3 +1,3 @@
-npm i -g @nestjs/cli
+# npm i -g @nestjs/cli
 
-nest new backend
+# nest new backend
