@@ -39,8 +39,10 @@ services:
       - 8.8.4.4
     # extra_hosts:
     #   - "host.docker.internal:host-gateway"
+    #https://zenn.dev/daifukuninja/articles/35c8c9812391f7
     depends_on:
-      - db
+      db:
+        condition: service_healthy
   db:
     image: mysql:8.0
     container_name: mysql80
