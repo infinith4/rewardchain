@@ -1,11 +1,18 @@
 
+
 mysql.env
 
 ```
 MYSQL_DATABASE=rewardchaindb
 MYSQL_USER=xxxxxx
 MYSQL_PASSWORD=xxxxxx
+REPLACE_ME_MYSQL_PASSWORD=REPLACE_ME_PASSWORD
 MYSQL_ROOT_PASSWORD=xxxxxx
+```
+
+
+```
+bash init_sql.sh
 ```
 
 
