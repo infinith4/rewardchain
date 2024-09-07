@@ -6,31 +6,49 @@ async function main() {
   // モデル投入用のデータ定義
   const userData = [
     {
-      id: 0,
       user_type: 0,
       first_name: 'Alice',
       last_names: 'January',
       username: 'alice',
       email: 'infinith4@gmail.com',
       hashed_password: 'password',
+      profile: {
+        user_id: 1,
+        specification: "specification1",
+        bio: "bio",
+        website: "website",
+        email: "email"
+      }
     },
     {
-      id: 1,
       user_type: 1,
       first_name: 'Bob',
       last_names: 'February',
       username: 'bob',
       email: 'infinith4@gmail.com',
       hashed_password: 'password',
+      profile: {
+        user_id: 1,
+        specification: "specification1",
+        bio: "bio",
+        website: "website",
+        email: "email"
+      }
     },
     {
-      id: 2,
       user_type: 1,
       first_name: 'Charlie',
       last_names: 'March',
       username: 'charlie',
       email: 'infinith4@gmail.com',
       hashed_password: 'password',
+      profile: {
+        user_id: 1,
+        specification: "specification1",
+        bio: "bio",
+        website: "website",
+        email: "email"
+      }
     },
   ]
 
