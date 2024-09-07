@@ -1,62 +1,134 @@
 import { PrismaClient } from '@prisma/client'
+import process from 'process';
 
 const prisma = new PrismaClient()
 
 async function main() {
-  // モデル投入用のデータ定義
-  const userData = [
-    {
-      user_type: 0,
-      first_name: 'Alice',
-      last_names: 'January',
-      username: 'alice',
-      email: 'infinith4@gmail.com',
-      hashed_password: 'password',
-      profile: {
-        user_id: 1,
-        specification: "specification1",
-        bio: "bio",
-        website: "website",
-        email: "email"
-      }
-    },
-    {
-      user_type: 1,
-      first_name: 'Bob',
-      last_names: 'February',
-      username: 'bob',
-      email: 'infinith4@gmail.com',
-      hashed_password: 'password',
-      profile: {
-        user_id: 1,
-        specification: "specification1",
-        bio: "bio",
-        website: "website",
-        email: "email"
-      }
-    },
-    {
-      user_type: 1,
-      first_name: 'Charlie',
-      last_names: 'March',
-      username: 'charlie',
-      email: 'infinith4@gmail.com',
-      hashed_password: 'password',
-      profile: {
-        user_id: 1,
-        specification: "specification1",
-        bio: "bio",
-        website: "website",
-        email: "email"
-      }
-    },
-  ]
+  // ユーザーデータのシード
+  const users = await prisma.users.createMany({
+    data: [
+      {
+        user_type: 'client',
+        first_name: 'Alice',
+        last_name: 'January',
+        username: 'alice',
+        email: 'alice@example.com',
+        hashed_password: 'password',
+      },
+      {
+        user_type: 'supplier',
+        first_name: 'Bob',
+        last_name: 'February',
+        username: 'bob',
+        email: 'bob@example.com',
+        hashed_password: 'password',
+      },
+      {
+        user_type: 'arbitrator',
+        first_name: 'Charlie',
+        last_name: 'March',
+        username: 'charlie',
+        email: 'charlie@example.com',
+        hashed_password: 'password',
+      },
+    ],
+  });
 
-  for (const user of userData) {
-    await prisma.users.create({
-      data: user
-    });
-  }
+  // プロファイルデータのシード
+  const profiles = await prisma.profiles.createMany({
+    data: [
+      {
+        user_id: 1,
+        specification: 'specification1',
+        bio: 'bio1',
+        website: 'website1',
+        email: 'email1@example.com',
+      },
+      {
+        user_id: 2,
+        specification: 'specification2',
+        bio: 'bio2',
+        website: 'website2',
+        email: 'email2@example.com',
+      },
+    ],
+  });
+
+  // タスクデータのシード
+  const tasks = await prisma.tasks.createMany({
+    data: [
+      {
+        user_id: 1,
+        status: 'new_task',
+        title: 'Task 1',
+        description: 'Description 1',
+        supplier_id: 2,
+      },
+      {
+        user_id: 2,
+        status: 'processing',
+        title: 'Task 2',
+        description: 'Description 2',
+        supplier_id: 1,
+      },
+    ],
+  });
+
+  // タスクコメントデータのシード
+  const taskComments = await prisma.task_comments.createMany({
+    data: [
+      {
+        task_id: 1,
+        coomment: 'Comment 1',
+      },
+      {
+        task_id: 2,
+        coomment: 'Comment 2',
+      },
+    ],
+  });
+
+  // タスクアイテムデータのシード
+  const taskItems = await prisma.task_items.createMany({
+    data: [
+      {
+        task_id: 1,
+        user_id: 1,
+        status: 'new_task',
+        title: 'Task Item 1',
+        description: 'Description 1',
+        supplier_id: 2,
+      },
+      {
+        task_id: 2,
+        user_id: 2,
+        status: 'processing',
+        title: 'Task Item 2',
+        description: 'Description 2',
+        supplier_id: 1,
+      },
+    ],
+  });
+
+  // 紛争データのシード
+  const disputations = await prisma.disputations.createMany({
+    data: [
+      {
+        task_id: 1,
+        status: 'dispute',
+        title: 'Dispute 1',
+        description: 'Description 1',
+        user_id: 1,
+      },
+      {
+        task_id: 2,
+        status: 'processing',
+        title: 'Dispute 2',
+        description: 'Description 2',
+        user_id: 2,
+      },
+    ],
+  });
 }
 
 main()
@@ -67,34 +139,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
-
-// const transfer = async () => {
-//     const users = [];
-//     for (const u of userData) {
-//         const user = prisma.users.create({
-//             data: u,
-//         })
-//         users.push(user);
-//     }
-//     return await prisma.$transaction(users);
-// }
-
-// // 定義されたデータを実際のモデルへ登録する処理
-// const main = async () => {
-//     console.log(`Start seeding ...`)
-
-//     await transfer();
-
-//     console.log(`Seeding finished.`)
-// }
-
-// // 処理開始
-// main()
-//     .catch((e) => {
-//         console.error(e)
-//         process.exit(1)
-//     })
-//     .finally(async () => {
-//         await prisma.$disconnect()
-//     })

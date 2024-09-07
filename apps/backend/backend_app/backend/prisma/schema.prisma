@@ -18,6 +18,7 @@ model disputations {
   arbitrator_id Int?
   created_at    DateTime             @default(dbgenerated("(now())")) @db.DateTime(0)
   updated_at    DateTime?            @db.DateTime(0)
+  tasks         tasks?
 
   @@index([task_id], map: "idx_disputations_task_id")
   @@index([user_id], map: "idx_disputations_user_id")
@@ -67,7 +68,7 @@ model task_items {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model tasks {
-  id            Int             @id @unique(map: "ui_tasks_id") @default(autoincrement())
+  id            Int             @id @default(autoincrement())
   user_id       Int
   status        tasks_status?
   title         String?         @db.VarChar(255)
@@ -79,6 +80,7 @@ model tasks {
   updated_at    DateTime?       @db.DateTime(0)
   task_comments task_comments[]
   task_items    task_items[]
+  disputations  disputations    @relation(fields: [id], references: [task_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_disputations_task_id_tasks_id")
   users         users           @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tasks_id_users_id")
 
   @@index([comment_id], map: "idx_task_items_comment_id")
