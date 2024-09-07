@@ -70,31 +70,6 @@ CREATE TABLE `disputations` (
   `updated_at` datetime
 );
 
-CREATE INDEX `idx_task_items_comment_id` ON `tasks` (`comment_id`);
-
-CREATE INDEX `idx_task_comments_task_id` ON `task_comments` (`task_id`);
-
-CREATE INDEX `idx_task_items_task_id` ON `task_items` (`task_id`);
-
-CREATE INDEX `idx_disputations_user_id` ON `disputations` (`user_id`);
-
-CREATE UNIQUE INDEX `ui_tasks_id` ON `tasks` (`id`);
-
-CREATE UNIQUE INDEX `ui_task_items_id` ON `task_items` (`id`);
-
-CREATE UNIQUE INDEX `ui_users_id` ON `users` (`id`);
-
-CREATE UNIQUE INDEX `ui_profiles_id` ON `profiles` (`id`);
-
-CREATE UNIQUE INDEX `idx_profiles_user_id` ON `profiles` (`user_id`);
-
-CREATE UNIQUE INDEX `ui_disputations_id` ON `disputations` (`id`);
-
--- インデックスを追加
-CREATE INDEX `idx_disputations_task_id` ON `disputations` (`task_id`);
-
-ALTER TABLE `users` COMMENT = 'table \'users\' contains user information';
-
 ALTER TABLE `task_comments` ADD CONSTRAINT `fk_task_comments_id_tasks_id` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE `task_items` ADD CONSTRAINT `fk_task_items_id_tasks_id` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -104,3 +79,25 @@ ALTER TABLE `users` ADD CONSTRAINT `fk_profiles_user_id_users_id` FOREIGN KEY (`
 ALTER TABLE `tasks` ADD CONSTRAINT `fk_disputations_task_id_tasks_id` FOREIGN KEY (`id`) REFERENCES `disputations` (`task_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE `tasks` ADD CONSTRAINT `fk_tasks_id_users_id` FOREIGN KEY (`id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+CREATE UNIQUE INDEX `ui_tasks_id` ON `tasks` (`id`);
+
+CREATE INDEX `idx_task_items_comment_id` ON `tasks` (`comment_id`);
+
+CREATE INDEX `idx_task_comments_task_id` ON `task_comments` (`task_id`);
+
+CREATE UNIQUE INDEX `ui_task_items_id` ON `task_items` (`id`);
+
+CREATE INDEX `idx_task_items_task_id` ON `task_items` (`task_id`);
+
+CREATE UNIQUE INDEX `ui_users_id` ON `users` (`id`);
+
+CREATE UNIQUE INDEX `ui_profiles_id` ON `profiles` (`id`);
+
+CREATE UNIQUE INDEX `idx_profiles_user_id` ON `profiles` (`user_id`);
+
+CREATE UNIQUE INDEX `ui_disputations_id` ON `disputations` (`id`);
+
+CREATE INDEX `idx_disputations_user_id` ON `disputations` (`user_id`);
+
+ALTER TABLE `users` COMMENT = 'table \'users\' contains user information';

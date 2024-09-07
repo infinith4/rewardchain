@@ -31,7 +31,18 @@ npx prisma init
 
 npx prisma migrate dev --name init
 
+# DB からprisma schema に反映する
+
+npx prisma db pull
+
 npx prisma db seed
 
 
 mysql -h db -u prisma_user -p grans4YaXs32X
+
+
+
+rewardchain_mysql.sql をDBに反映し、 npx prisma db pull で以下のファイルを同期済み。
+
+backend/prisma/schema.prisma
+
