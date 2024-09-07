@@ -1,9 +1,7 @@
-FROM --platform=linux/amd64 mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
-# FROM --platform=linux/amd64 alpine/mysql:15.1
+FROM --platform=arm64 mcr.microsoft.com/devcontainers/base:jammy
 
-RUN su node -c "npm install -g npm@10.8.3"
-# RUN su node -c "apk add --no-cache alpine-sdk \
-#     mysql-client \
-#     mysql-dev \
-#     build-base \
-#     tzdata"
+# [Optional] Uncomment this section to install additional OS packages.
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+     && apt-get -y install --no-install-recommends sudo curl
+
+# ENV TZ=Asia/Tokyo LANG=ja_JP.UTF-8 LANGUAGE=ja_JP:ja

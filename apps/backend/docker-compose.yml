@@ -1,9 +1,4 @@
-volumes:
-  mysql_data:
-
-networks:
-  mychain-network:
-    name: mychain-network
+version: '3'
 
 services:
   app:
@@ -14,52 +9,44 @@ services:
     # ports:
     #   - 3200:4200
     tty: true
+    env_file:
+      - .env
     volumes:
       - type: bind
         source: ./backend_app
         target: /backend_app
-    # environment:
-    #   - WATCHPACK_POLLING=true
-
-    # dns:
-    #   - 8.8.8.8
-    # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
     networks:
       - mychain-network
-    # network_mode: 'host'
-    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    # network_mode: bridge
-    # network_mode: service:db
-    # restart: always
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
-    # extra_hosts:
-    #   - "host.docker.internal:host-gateway"
-    #https://zenn.dev/daifukuninja/articles/35c8c9812391f7
     depends_on:
       db:
         condition: service_healthy
   db:
     image: mysql:8.0
     container_name: mysql80
+    platform: linux/arm64
     restart: always
     ports:
-      - '3306:3306'
+      - 3306:3306
     env_file:
       - mysql.env
+    healthcheck:   # ヘルスチェックの追加
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD"]
+      interval: 30s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
     networks:
       - mychain-network
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
-    # network_mode: service:app
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init_db:/docker-entrypoint-initdb.d
+      # 設定ファイルディレクトリにマウントする
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      # DB初期化ディレクトリにマウントする
+      - ./mysql/init.d:/docker-entrypoint-initdb.d
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    platform: linux/amd64
     container_name: phpmyadmin
     restart: always
     networks:
@@ -70,3 +57,11 @@ services:
       - 9090:80
     volumes:
       - ./docker/phpmyadmin/sessions:/sessions
+
+
+volumes:
+  mysql_data:
+
+networks:
+  mychain-network:
+    driver: bridge
