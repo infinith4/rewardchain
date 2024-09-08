@@ -8,20 +8,19 @@ datasource db {
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model disputations {
-  id            Int                  @id @unique(map: "ui_disputations_id")
-  task_id       Int?
-  status        disputations_status?
-  title         String?              @db.VarChar(255)
-  description   String?              @db.VarChar(255)
-  user_id       Int
-  arbitrator_id Int?
-  created_at    DateTime             @default(dbgenerated("(now())")) @db.DateTime(0)
-  updated_at    DateTime?            @db.DateTime(0)
-  tasks         tasks?
-
-  @@index([task_id], map: "idx_disputations_task_id")
-  @@index([user_id], map: "idx_disputations_user_id")
+model users {
+  id              Int              @id @unique(map: "ui_users_id")
+  user_type       users_user_type?
+  first_name      String?          @db.VarChar(255)
+  last_name       String?          @db.VarChar(255)
+  username        String           @unique(map: "username") @db.VarChar(255)
+  email           String           @unique(map: "email") @db.VarChar(255)
+  hashed_password String?          @db.VarChar(255)
+  avatar_url      String?          @db.VarChar(255)
+  last_login_at   DateTime         @default(dbgenerated("(now())")) @db.DateTime(0)
+  created_at      DateTime         @default(dbgenerated("(now())")) @db.DateTime(0)
+  updated_at      DateTime?        @db.DateTime(0)
+  profiles        profiles         @relation(fields: [id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_profiles_user_id_users_id")
 }
 
 model profiles {
@@ -36,73 +35,6 @@ model profiles {
   users         users?
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model task_comments {
-  id         Int       @id @default(autoincrement())
-  task_id    Int
-  coomment   String?   @db.VarChar(255)
-  created_at DateTime  @default(dbgenerated("(now())")) @db.DateTime(0)
-  updated_at DateTime? @db.DateTime(0)
-  tasks      tasks     @relation(fields: [task_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_task_comments_id_tasks_id")
-
-  @@index([task_id], map: "idx_task_comments_task_id")
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model task_items {
-  id          Int                @id @unique(map: "ui_task_items_id") @default(autoincrement())
-  task_id     Int
-  user_id     Int
-  status      task_items_status?
-  title       String?            @db.VarChar(255)
-  description String?            @db.VarChar(255)
-  supplier_id Int
-  comment_id  Int?
-  due_date    DateTime?          @db.DateTime(0)
-  created_at  DateTime           @default(dbgenerated("(now())")) @db.DateTime(0)
-  updated_at  DateTime?          @db.DateTime(0)
-  tasks       tasks              @relation(fields: [task_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_task_items_id_tasks_id")
-
-  @@index([task_id], map: "idx_task_items_task_id")
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model tasks {
-  id            Int             @id @default(autoincrement())
-  user_id       Int
-  status        tasks_status?
-  title         String?         @db.VarChar(255)
-  description   String?         @db.VarChar(255)
-  supplier_id   Int
-  comment_id    Int?
-  due_date      DateTime?       @db.DateTime(0)
-  created_at    DateTime        @default(dbgenerated("(now())")) @db.DateTime(0)
-  updated_at    DateTime?       @db.DateTime(0)
-  task_comments task_comments[]
-  task_items    task_items[]
-  disputations  disputations    @relation(fields: [id], references: [task_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_disputations_task_id_tasks_id")
-  users         users           @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tasks_id_users_id")
-
-  @@index([comment_id], map: "idx_task_items_comment_id")
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model users {
-  id              Int              @id @unique(map: "ui_users_id")
-  user_type       users_user_type?
-  first_name      String?          @db.VarChar(255)
-  last_name       String?          @db.VarChar(255)
-  username        String           @unique(map: "username") @db.VarChar(255)
-  email           String           @unique(map: "email") @db.VarChar(255)
-  hashed_password String?          @db.VarChar(255)
-  avatar_url      String?          @db.VarChar(255)
-  last_login_at   DateTime         @default(dbgenerated("(now())")) @db.DateTime(0)
-  created_at      DateTime         @default(dbgenerated("(now())")) @db.DateTime(0)
-  updated_at      DateTime?        @db.DateTime(0)
-  tasks           tasks?
-  profiles        profiles         @relation(fields: [id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_profiles_user_id_users_id")
-}
-
 enum users_user_type {
   client
   supplier
@@ -110,27 +42,3 @@ enum users_user_type {
   patron
 }
 
-enum tasks_status {
-  new_task
-  processing
-  review
-  completed
-  pending
-  cancelled
-}
-
-enum disputations_status {
-  dispute
-  processing
-  validated
-  completed
-}
-
-enum task_items_status {
-  new_task
-  processing
-  review
-  completed
-  pending
-  cancelled
-}
