@@ -5,16 +5,21 @@ import process from 'process';
 
 const prisma = new PrismaClient()
 
+var one_profile = {
+  id: 100,
+  user_id: 10, // このidを指定するとusers のidもこのidになる
+  specification: 'specification1',
+  bio: 'bio1',
+  website: 'website1',
+  email: 'email1@example.com',
+}
+
 async function main() {
 
   // ユーザーデータのシード
-  const users = await prisma.users.upsert({
-    where: {
-      id: 1
-    },
-    create:
+  const users = await prisma.users.create({
+    data:
       {
-        id: 1,
         user_type: 'client',
         first_name: 'Alice',
         last_name: 'January',
@@ -22,14 +27,7 @@ async function main() {
         email: 'alice@example.com',
         hashed_password: 'password',
         profiles: {
-          connect: {
-            id: 1,
-            user_id: 1, // 'users' を 'user_id' に変更
-            specification: 'specification1',
-            bio: 'bio1',
-            website: 'website1',
-            email: 'email1@example.com',
-          }
+          create: one_profile
         }
       },
       // {
@@ -52,27 +50,27 @@ async function main() {
       // },
     // ],
   });
-  // プロファイルデータのシード
-  const profiles = await prisma.profiles.createMany({
-    data: [
-      {
-        id: 1,
-        user_id: 1, // 'users' を 'user_id' に変更
-        specification: 'specification1',
-        bio: 'bio1',
-        website: 'website1',
-        email: 'email1@example.com',
-      },
-      {
-        id: 2,
-        user_id: 2,
-        specification: 'specification2',
-        bio: 'bio2',
-        website: 'website2',
-        email: 'email2@example.com',
-      },
-    ],
-  });
+  // // プロファイルデータのシード
+  // const profiles = await prisma.profiles.createMany({
+  //   data: [
+  //     {
+  //       id: 1,
+  //       user_id: 1, // 'users' を 'user_id' に変更
+  //       specification: 'specification1',
+  //       bio: 'bio1',
+  //       website: 'website1',
+  //       email: 'email1@example.com',
+  //     },
+  //     {
+  //       id: 2,
+  //       user_id: 2,
+  //       specification: 'specification2',
+  //       bio: 'bio2',
+  //       website: 'website2',
+  //       email: 'email2@example.com',
+  //     },
+  //   ],
+  // });
 
 
 
