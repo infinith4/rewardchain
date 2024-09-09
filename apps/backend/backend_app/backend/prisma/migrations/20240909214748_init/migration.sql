@@ -87,3 +87,6 @@ ALTER TABLE `task_comments` ADD CONSTRAINT `fk_task_comments_id_tasks_id` FOREIG
 
 -- AddForeignKey
 ALTER TABLE `task_items` ADD CONSTRAINT `fk_task_items_id_tasks_id` FOREIGN KEY (`task_id`) REFERENCES `tasks`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `tasks` ADD CONSTRAINT `fk_tasks_id_users_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

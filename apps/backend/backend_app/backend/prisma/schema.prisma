@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+//users -> profiles
+//profiles        profiles         @relation(fields: [users.id], references: [profiles.user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_profiles_user_id_users_id")
+
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model users {
   id              Int              @id @unique(map: "ui_users_id")
@@ -21,6 +25,7 @@ model users {
   created_at      DateTime         @default(dbgenerated("(now())")) @db.DateTime(0)
   updated_at      DateTime?        @db.DateTime(0)
   profiles        profiles         @relation(fields: [id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_profiles_user_id_users_id")
+  tasks tasks[]
 }
 
 model profiles {
@@ -87,7 +92,7 @@ model tasks {
   task_comments task_comments[]
   task_items    task_items[]
   //disputations  disputations    @relation(fields: [id], references: [task_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_disputations_task_id_tasks_id")
-  //users         users           @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tasks_id_users_id")
+  users         users           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tasks_id_users_id")
 
   //@@index([comment_id], map: "idx_task_items_comment_id")
 }
