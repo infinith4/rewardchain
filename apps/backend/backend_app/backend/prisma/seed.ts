@@ -153,6 +153,17 @@ async function main() {
         user_id: alice_tasks.user_id,
       }
   });
+  // 紛争データのシード
+  const disputations2 = await prisma.disputations.create({
+    data: {
+        task_id: alice_tasks.id,
+        status: 'dispute',
+        title: 'Dispute 2',
+        description: 'Description 2',
+        user_id: alice_tasks.user_id,
+        arbitrator_id: charlie_user_id,
+      }
+  });
 }
 
 main()

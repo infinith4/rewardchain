@@ -111,3 +111,6 @@ ALTER TABLE `tasks` ADD CONSTRAINT `fk_tasks_id_users_id` FOREIGN KEY (`user_id`
 
 -- AddForeignKey
 ALTER TABLE `disputations` ADD CONSTRAINT `fk_disputations_task_id_tasks_id` FOREIGN KEY (`task_id`) REFERENCES `tasks`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `disputations` ADD CONSTRAINT `fk_disputations_user_id_users_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
