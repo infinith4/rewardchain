@@ -1,13 +1,12 @@
 import { PrismaClient, $Enums } from '@prisma/client'
-import { create } from 'domain';
 import { connect } from 'http2';
 import process from 'process';
 
 const prisma = new PrismaClient()
 
 var alice_profile = {
-  id: 100,
-  user_id: 10, // このidを指定するとusers のidもこのidになる
+  id: 1,
+  user_id: 1, // このidを指定するとusers のidもこのidになる
   specification: 'specification1',
   bio: 'bio1',
   website: 'website1',
