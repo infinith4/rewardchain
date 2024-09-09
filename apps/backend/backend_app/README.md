@@ -33,6 +33,8 @@ GRANT ALL PRIVILEGES ON *.* TO 'prisma_user'@'%' WITH GRANT OPTION;
 
 npx prisma init
 
+DROP TABLE `profiles`, `tasks`, `task_comments`, `task_items`, `users`, `_prisma_migrations`;
+
 npx prisma migrate dev --name init
 
 # DB からprisma schema に反映する
