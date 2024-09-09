@@ -79,6 +79,24 @@ CREATE TABLE `tasks` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `disputations` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `task_id` INTEGER NOT NULL,
+    `status` ENUM('dispute', 'processing', 'validated', 'completed') NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `description` VARCHAR(255) NULL,
+    `user_id` INTEGER NOT NULL,
+    `arbitrator_id` INTEGER NULL,
+    `created_at` DATETIME(0) NOT NULL DEFAULT (now()),
+    `updated_at` DATETIME(0) NULL,
+
+    UNIQUE INDEX `ui_disputations_id`(`id`),
+    INDEX `idx_disputations_task_id`(`task_id`),
+    INDEX `idx_disputations_user_id`(`user_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `users` ADD CONSTRAINT `fk_profiles_user_id_users_id` FOREIGN KEY (`id`) REFERENCES `profiles`(`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -90,3 +108,6 @@ ALTER TABLE `task_items` ADD CONSTRAINT `fk_task_items_id_tasks_id` FOREIGN KEY 
 
 -- AddForeignKey
 ALTER TABLE `tasks` ADD CONSTRAINT `fk_tasks_id_users_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `disputations` ADD CONSTRAINT `fk_disputations_task_id_tasks_id` FOREIGN KEY (`task_id`) REFERENCES `tasks`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

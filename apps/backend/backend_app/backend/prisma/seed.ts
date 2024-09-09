@@ -143,63 +143,16 @@ async function main() {
     }
   });
 
-//   // タスクコメントデータのシード
-//   const taskComments = await prisma.task_comments.createMany({
-//     data: [
-//       {
-//         task_id: 1,
-//         coomment: 'Comment 1',
-//       },
-//       {
-//         task_id: 2,
-//         coomment: 'Comment 2',
-//       },
-//     ],
-//   });
-
-//   // タスクアイテムデータのシード
-//   const taskItems = await prisma.task_items.createMany({
-//     data: [
-//       {
-//         task_id: 1,
-//         user_id: 1,
-//         status: 'new_task',
-//         title: 'Task Item 1',
-//         description: 'Description 1',
-//         supplier_id: 2,
-//       },
-//       {
-//         task_id: 2,
-//         user_id: 2,
-//         status: 'processing',
-//         title: 'Task Item 2',
-//         description: 'Description 2',
-//         supplier_id: 1,
-//       },
-//     ],
-//   });
-
-//   // 紛争データのシード
-//   const disputations = await prisma.disputations.createMany({
-//     data: [
-//       {
-//         id: 1,
-//         task_id: 1,
-//         status: 'dispute',
-//         title: 'Dispute 1',
-//         description: 'Description 1',
-//         user_id: 1,
-//       },
-//       {
-//         id: 2,
-//         task_id: 2,
-//         status: 'processing',
-//         title: 'Dispute 2',
-//         description: 'Description 2',
-//         user_id: 2,
-//       },
-//     ],
-//   });
+  // 紛争データのシード
+  const disputations = await prisma.disputations.create({
+    data: {
+        task_id: alice_tasks.id,
+        status: 'dispute',
+        title: 'Dispute 1',
+        description: 'Description 1',
+        user_id: alice_tasks.user_id,
+      }
+  });
 }
 
 main()

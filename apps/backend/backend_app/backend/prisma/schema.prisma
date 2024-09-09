@@ -91,12 +91,27 @@ model tasks {
   updated_at    DateTime?       @db.DateTime(0)
   task_comments task_comments[]
   task_items    task_items[]
-  //disputations  disputations    @relation(fields: [id], references: [task_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_disputations_task_id_tasks_id")
   users         users           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tasks_id_users_id")
-
+  disputations disputations[]
   //@@index([comment_id], map: "idx_task_items_comment_id")
 }
 
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model disputations {
+  id            Int                  @id @default(autoincrement()) @unique(map: "ui_disputations_id")
+  task_id       Int
+  status        disputations_status?
+  title         String               @db.VarChar(255)
+  description   String?              @db.VarChar(255)
+  user_id       Int
+  arbitrator_id Int?
+  created_at    DateTime             @default(dbgenerated("(now())")) @db.DateTime(0)
+  updated_at    DateTime?            @db.DateTime(0)
+  tasks         tasks                @relation(fields: [task_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_disputations_task_id_tasks_id")
+
+  @@index([task_id], map: "idx_disputations_task_id")
+  @@index([user_id], map: "idx_disputations_user_id")
+}
 
 enum tasks_status {
   new_task
@@ -114,4 +129,11 @@ enum task_items_status {
   completed
   pending
   cancelled
+}
+
+enum disputations_status {
+  dispute
+  processing
+  validated
+  completed
 }
