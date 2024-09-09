@@ -110,12 +110,29 @@ async function main() {
   });
 
   // タスクデータのシード
-  const tasks = await prisma.tasks.create({
+  const alice_tasks = await prisma.tasks.create({
     data: {
       user_id: alice_user_id,
       status: $Enums.tasks_status.new_task,
       title: 'title1',
       description: 'description1',
+      supplier_id: bob_user_id,
+      task_comments: {
+        create: task_comments
+      },
+      task_items: {
+        create: task_items
+      }
+    }
+  });
+
+  // タスクデータのシード
+  const alice_tasks2 = await prisma.tasks.create({
+    data: {
+      user_id: alice_user_id,
+      status: $Enums.tasks_status.new_task,
+      title: 'title2',
+      description: 'description2',
       supplier_id: bob_user_id,
       task_comments: {
         create: task_comments
