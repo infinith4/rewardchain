@@ -1,11 +1,11 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, $Enums } from '@prisma/client'
 import { create } from 'domain';
 import { connect } from 'http2';
 import process from 'process';
 
 const prisma = new PrismaClient()
 
-var one_profile = {
+var alice_profile = {
   id: 100,
   user_id: 10, // このidを指定するとusers のidもこのidになる
   specification: 'specification1',
@@ -13,6 +13,34 @@ var one_profile = {
   website: 'website1',
   email: 'email1@example.com',
 }
+
+// var task_comments = [
+//   {
+//     task_id: 1,
+//     coomment: 'Comment 1',
+//   },
+//   {
+//     task_id: 1,
+//     coomment: 'Comment 2',
+//   },
+// ];
+
+// var task_items = [
+//   {
+//     user_id: 10,
+//     status: $Enums.task_items_status.new_task,
+//     title: 'Task Item 1',
+//     description: 'Description 1',
+//     supplier_id: 10,
+//   },
+//   {
+//     user_id: 10,
+//     status: $Enums.task_items_status.processing,
+//     title: 'Task Item 2',
+//     description: 'Description 2',
+//     supplier_id: 10,
+//   },
+// ]
 
 async function main() {
 
@@ -27,7 +55,7 @@ async function main() {
         email: 'alice@example.com',
         hashed_password: 'password',
         profiles: {
-          create: one_profile
+          create: alice_profile
         }
       },
       // {
@@ -74,25 +102,22 @@ async function main() {
 
 
 
-//   // タスクデータのシード
-//   const tasks = await prisma.tasks.createMany({
-//     data: [
-//       {
-//         user_id: 1,
-//         status: 'new_task',
-//         title: 'Task 1',
-//         description: 'Description 1',
-//         supplier_id: 2,
-//       },
-//       {
-//         user_id: 2,
-//         status: 'processing',
-//         title: 'Task 2',
-//         description: 'Description 2',
-//         supplier_id: 1,
-//       },
-//     ],
-//   });
+  // // タスクデータのシード
+  // const tasks = await prisma.tasks.create({
+  //   data: {
+  //     user_id: 10,
+  //     status: $Enums.tasks_status.new_task,
+  //     title: '',
+  //     description: '',
+  //     supplier_id: 10,
+  //     task_comments: {
+  //       create: task_comments
+  //     },
+  //     task_items: {
+  //       create: task_items
+  //     }
+  //   }
+  // });
 
 //   // タスクコメントデータのシード
 //   const taskComments = await prisma.task_comments.createMany({
