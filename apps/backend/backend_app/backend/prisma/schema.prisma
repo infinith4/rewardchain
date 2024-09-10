@@ -26,7 +26,8 @@ model users {
   updated_at      DateTime?        @db.DateTime(0)
   profiles        profiles         @relation(fields: [id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_profiles_user_id_users_id")
   tasks tasks[]
-  disputations disputations[]
+  disputations disputations[] @relation("create_user")
+  arbitrator_disputations disputations[] @relation("arbitrator_user")
 }
 
 model profiles {
@@ -110,8 +111,8 @@ model disputations {
   updated_at    DateTime?            @db.DateTime(0)
   tasks         tasks                @relation(fields: [task_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_disputations_task_id_tasks_id")
 
-  users         users           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_disputations_user_id_users_id")
-  //arbitrator_users         users           @relation(fields: [arbitrator_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_disputations_arbitrator_id_users_id")
+  users         users           @relation("create_user", fields: [user_id], references: [id])
+  arbitrator_users         users?           @relation("arbitrator_user", fields: [arbitrator_id], references: [id])
   
   @@index([task_id], map: "idx_disputations_task_id")
   @@index([user_id], map: "idx_disputations_user_id")

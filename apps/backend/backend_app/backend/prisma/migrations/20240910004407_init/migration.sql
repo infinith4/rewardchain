@@ -113,4 +113,7 @@ ALTER TABLE `tasks` ADD CONSTRAINT `fk_tasks_id_users_id` FOREIGN KEY (`user_id`
 ALTER TABLE `disputations` ADD CONSTRAINT `fk_disputations_task_id_tasks_id` FOREIGN KEY (`task_id`) REFERENCES `tasks`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE `disputations` ADD CONSTRAINT `fk_disputations_user_id_users_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `disputations` ADD CONSTRAINT `disputations_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `disputations` ADD CONSTRAINT `disputations_arbitrator_id_fkey` FOREIGN KEY (`arbitrator_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
