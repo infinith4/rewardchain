@@ -14,6 +14,7 @@ user: prisma_user
 cd backend
 
 yarn start:dev
+yarn start:debug
 
 curl https://github.com/infinith4/rewardchain/apps/backend
 

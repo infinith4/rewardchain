@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Delete, Put, Patch } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AppService } from '../services/app.service';
 import { debug } from 'console';
 
 @Controller()
