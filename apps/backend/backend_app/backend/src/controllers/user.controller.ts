@@ -20,10 +20,10 @@ export class UserController {
   }
   @Put('/:id')
   putUser(@Param('id') id: string): {} {
-    return this.userService.getUser();
+    return this.userService.getUser(id);
   }
   @Delete('/:id')
   deleteUser(@Param('id') id: string): {} {
-    return this.userService.getUser();
+    return this.userService.getUser(id);
   }
 }
