@@ -71,3 +71,5 @@ Validation Error Count: 1
 [Context: getDmmf]
 
 Prisma CLI Version : 5.19.1
+
+npm i @nestjs/typeorm typeorm
