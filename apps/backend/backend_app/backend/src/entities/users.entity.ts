@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 const userClass = ['client', 'supplier', 'arbitrator', 'patron'] as const;
-type UserClass = typeof userClass[number];
+export type UserClass = typeof userClass[number];
 
 
 // export enum UserClass {

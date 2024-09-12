@@ -72,4 +72,4 @@ Validation Error Count: 1
 
 Prisma CLI Version : 5.19.1
 
-npm i @nestjs/typeorm typeorm
+yarn add -D @nestjs/typeorm typeorm mysql2 class-validator @nestjs/swagger 

@@ -14,7 +14,7 @@ export class TaskItem {
   @Column({ type: 'int', nullable: false })
   user_id: number;
 
-  @Column({ type: 'enum', enum: TaskStatus, nullable: false })
+  @Column({ type: 'enum', nullable: false })
   status: TaskStatus;
 
   @Column({ type: 'varchar', nullable: false })

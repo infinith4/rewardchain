@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 const taskStatus = ['new_task', 'processing', 'review', 'completed', 'pending', 'cancelled'] as const;
-type TaskStatus = typeof taskStatus[number];
+export type TaskStatus = typeof taskStatus[number];
 
 // export enum TaskStatus {
 //   NEW_TASK = 'new_task',
