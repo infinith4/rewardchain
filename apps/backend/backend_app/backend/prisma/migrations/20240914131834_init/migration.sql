@@ -98,7 +98,7 @@ CREATE TABLE `disputations` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `users` ADD CONSTRAINT `fk_profiles_user_id_users_id` FOREIGN KEY (`id`) REFERENCES `profiles`(`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `profiles` ADD CONSTRAINT `fk_profiles_user_id_users_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `task_comments` ADD CONSTRAINT `fk_task_comments_id_tasks_id` FOREIGN KEY (`task_id`) REFERENCES `tasks`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

@@ -14,7 +14,7 @@ export class TaskItem {
   @Column({ type: 'int', nullable: false })
   user_id: number;
 
-  @Column({ type: 'enum', nullable: false })
+  @Column({ type: 'enum', enumName: "TaskStatus", nullable: false })
   status: TaskStatus;
 
   @Column({ type: 'varchar', nullable: false })
@@ -25,9 +25,6 @@ export class TaskItem {
 
   @Column({ type: 'int', nullable: false })
   supplier_id: number;
-
-  @Column({ type: 'int', nullable: true })
-  comment_id: number;
 
   @Column({ type: 'datetime', nullable: false })
   due_date: Date;

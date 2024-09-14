@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index, OneToOne, JoinColumn } from 'typeorm';
+import { Profile } from './profiles.entity'; // 追加
 
 const userClass = ['client', 'supplier', 'arbitrator', 'patron'] as const;
 export type UserClass = typeof userClass[number];
-
 
 // export enum UserClass {
 //   CLIENT = 'client',
@@ -46,4 +46,8 @@ export class User {
 
   @UpdateDateColumn({ type: 'datetime' })
   updated_at: Date;
+
+  @OneToOne(() => Profile, profile => profile.user) // 追加
+  //@JoinColumn() // 変更
+  profile: Profile; // 追加
 }

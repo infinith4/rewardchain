@@ -6,15 +6,6 @@ const prisma = new PrismaClient()
 
 var alice_user_id = 10;
 
-var alice_profile = {
-  id: 1,
-  user_id: alice_user_id, // このidを指定するとusers のidもこのidになる
-  specification: 'specification1',
-  bio: 'bio1',
-  website: 'website1',
-  email: 'email1@example.com',
-}
-
 var bob_user_id = 20;
 
 var bob_profile = {
@@ -67,46 +58,59 @@ async function main() {
   const alice_users = await prisma.users.create({
     data:
       {
+        id: alice_user_id,
         user_type: 'client',
         first_name: 'Alice',
         last_name: 'January',
         username: 'alice',
         email: 'infinith4+alice@gmail.com',
-        hashed_password: 'password',
-        profiles: {
-          create: alice_profile
-        }
+        hashed_password: 'password'
       },
+  });
+  // profile data シード
+  const alice_profiles = await prisma.profiles.create({
+    data: {
+      id: 1,
+      user_id: alice_users.id, // このidを指定するとusers のidもこのidになる
+      specification: 'specification1',
+      bio: 'bio1',
+      website: 'website1',
+      email: 'infinith4@gmail.com',
+    },
   });
   // ユーザーデータのシード
   const bob_users = await prisma.users.create({
     data:
       {
+        id: bob_user_id,
         user_type: 'supplier',
         first_name: 'Bob',
         last_name: 'February',
         username: 'bob',
         email: 'infinith4+bob@gmail.com',
-        hashed_password: 'password',
-        profiles: {
-          create: bob_profile
-        }
+        hashed_password: 'password'
       },
+  });
+  // profile data シード
+  const bob_profiles = await prisma.profiles.create({
+    data: bob_profile,
   });
   // ユーザーデータのシード
   const charlie_users = await prisma.users.create({
     data:
       {
+        id: charlie_user_id,
         user_type: 'arbitrator',
         first_name: 'Charlie',
         last_name: 'March',
         username: 'charlie',
         email: 'infinith4+charlie@gmail.com',
         hashed_password: 'password',
-        profiles: {
-          create: charlie_profile
-        }
       },
+  });
+  // profile data シード
+  const charlie_profiles = await prisma.profiles.create({
+    data: charlie_profile,
   });
 
   // タスクデータのシード

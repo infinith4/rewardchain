@@ -1,27 +1,26 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsInt, IsString, Length } from "class-validator";
-import { UserClass } from "src/entities/users.entity";
 
-export class UserDto {
-  @ApiProperty()
-  @IsString()
-  @Length(1, 30)
-  user_type: UserClass;
+export class ProfileDto {
 
   @ApiProperty()
-  @IsString()
-  @Length(1, 30)
-  first_name: string;
+  @IsInt()
+  user_id: number;
 
   @ApiProperty()
   @IsString()
   @Length(1, 30)
-  last_name: string;
+  specification: string;
 
   @ApiProperty()
   @IsString()
   @Length(1, 30)
-  username: string;
+  bio: string;
+
+  @ApiProperty()
+  @IsString()
+  @Length(1, 30)
+  website: string;
 
   @ApiProperty()
   @IsString()
@@ -32,16 +31,6 @@ export class UserDto {
   @IsString()
   @Length(1, 1000)
   hashed_password: string;
-
-  @ApiProperty()
-  @IsString()
-  @Length(1, 1000)
-  avatar_url: string;
-
-  @ApiProperty()
-  @IsString()
-  @Length(1, 30)
-  last_login_at: Date;
 
   @ApiProperty()
   @IsString()

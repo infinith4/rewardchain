@@ -24,7 +24,7 @@ model users {
   last_login_at   DateTime         @default(dbgenerated("(now())")) @db.DateTime(0)
   created_at      DateTime         @default(dbgenerated("(now())")) @db.DateTime(0)
   updated_at      DateTime?        @db.DateTime(0)
-  profiles        profiles         @relation(fields: [id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_profiles_user_id_users_id")
+  profiles        profiles?
   tasks tasks[]
   disputations disputations[] @relation("create_user")
   arbitrator_disputations disputations[] @relation("arbitrator_user")
@@ -39,7 +39,7 @@ model profiles {
   email         String?   @db.VarChar(255)
   created_at    DateTime  @default(dbgenerated("(now())")) @db.DateTime(0)
   updated_at    DateTime? @db.DateTime(0)
-  users         users?
+  users         users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_profiles_user_id_users_id")
 }
 
 enum users_user_type {

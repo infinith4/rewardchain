@@ -14,7 +14,6 @@ export type TaskStatus = typeof taskStatus[number];
 
 @Entity('tasks')
 @Index('ui_tasks_id', ['id'], { unique: true })
-@Index('idx_task_items_comment_id', ['comment_id'])
 export class Task {
   @PrimaryGeneratedColumn()
   id: number;
@@ -33,9 +32,6 @@ export class Task {
 
   @Column({ type: 'int', nullable: false })
   supplier_id: number;
-
-  @Column({ type: 'int', nullable: true })
-  comment_id: number;
 
   @Column({ type: 'datetime', nullable: false })
   due_date: Date;

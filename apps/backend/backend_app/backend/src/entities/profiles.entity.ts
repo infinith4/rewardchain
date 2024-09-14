@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index, OneToOne, JoinColumn } from 'typeorm';
+import { User } from './users.entity'; // 追加
 
 @Entity('profiles')
 @Index('ui_profiles_id', ['id'], { unique: true })
@@ -27,4 +28,8 @@ export class Profile {
 
   @UpdateDateColumn({ type: 'datetime' })
   updated_at: Date;
+
+  @OneToOne(() => User, user => user.profile, { onDelete: 'CASCADE' }) // 修正
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }
