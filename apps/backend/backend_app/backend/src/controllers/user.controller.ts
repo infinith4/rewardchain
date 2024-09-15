@@ -11,18 +11,22 @@ export class UserController {
   getRoot(): {} {
     return this.userService.getUser();
   }
-  @Get('/all')
+
+  @Get('all')
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
-  @Get('/:id')
+
+  @Get(':id')
   async getUser(@Param('id') id: number): Promise<User> {
     return this.userService.findOne(id);
   }
-  @Post('/signup')
+
+  @Post('signup')
   postSignup(@Body() createUserDto: UserDto): Promise<User> {
     return this.userService.create(createUserDto);
   }
+
   @Put(":id")
   async update(
     @Param("id") id: number,
@@ -30,7 +34,8 @@ export class UserController {
   ): Promise<User | null> {
     return this.userService.update(id, updateUserDto);
   }
-  @Delete('/:id')
+  
+  @Delete(':id')
   async delete(@Param('id') id: number): Promise<void> {
     return this.userService.delete(id);
   }
