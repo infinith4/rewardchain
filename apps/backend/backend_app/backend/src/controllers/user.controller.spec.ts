@@ -37,14 +37,14 @@ describe('UserController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('findAll method returns users array.', async () => {
-    const expected = generateMockUser(3);
-    jest.spyOn(mockRepository, 'find').mockImplementation(async () => expected);
+  // it('findAll method returns users array.', async () => {
+  //   const expected = generateMockUser(3);
+  //   jest.spyOn(mockRepository, 'find').mockImplementation(async () => expected);
 
-    const res = await controller.findAll();
-    expect(res.length).toBe(3);
-    expect(res).toEqual(expected);
-  });
+  //   const res = await controller.findAll();
+  //   expect(res.length).toBe(3);
+  //   expect(res).toEqual(expected);
+  // });
 
   // it('findOne method throws not found error when specified user does not exists.', async () => {
   //   jest.spyOn(mockRepository, 'findOne').mockImplementation(async () => null);

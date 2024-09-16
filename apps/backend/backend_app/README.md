@@ -81,3 +81,6 @@ https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%AA%E3%82%B9%E3%81%A8%E3%83%9C%E3%8
 
 Dave
 Ellen
+
+
+yarn add -D @nestjs/swagger
