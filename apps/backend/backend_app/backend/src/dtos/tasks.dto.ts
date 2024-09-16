@@ -1,7 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsInt, IsString, Length } from "class-validator";
+import { TaskStatus } from "src/entities/tasks.entity";
 
-export class ProfileDto {
+export class TaskDto {
 
   @ApiProperty()
   @IsInt()
@@ -10,22 +11,26 @@ export class ProfileDto {
   @ApiProperty()
   @IsString()
   @Length(1, 30)
-  specification: string;
+  status: TaskStatus;
 
   @ApiProperty()
   @IsString()
   @Length(1, 30)
-  bio: string;
+  title: string;
 
   @ApiProperty()
   @IsString()
   @Length(1, 30)
-  website: string;
+  description: string;
+
+  @ApiProperty()
+  @IsInt()
+  supplier_id: number;
 
   @ApiProperty()
   @IsString()
   @Length(1, 30)
-  email: string;
+  due_date: Date;
 
   @ApiProperty()
   @IsString()

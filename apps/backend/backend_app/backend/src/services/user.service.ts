@@ -47,6 +47,7 @@ export class UserService {
     user.profile = profile; // 変更
 
     const savedUser = await this.userRepository.save(user);
+    // const savedProfile = await this.profileRepository.save(profile);
     return savedUser;
   }
 
