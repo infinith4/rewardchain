@@ -9,7 +9,7 @@ export class ProfileController {
 
   @Get()
   getRoot(): {} {
-    return "profile";
+    return this.profileService.getProfile();
   }
 
   @Get('all')

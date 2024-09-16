@@ -12,6 +12,10 @@ export class ProfileService {
     private readonly profileRepository: Repository<Profile>
   ) {}
 
+  getProfile(id: string = ""): { msg: string } {
+    return { msg: `profile${id}` };
+  }
+
   async findAll(): Promise<Profile[]> {
     return this.profileRepository.find();
   }

@@ -1,14 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 const validationStatus = ['dispute', 'processing', 'validated', 'completed'] as const;
-type ValidationStatus = typeof validationStatus[number];
-
-// export enum ValidationStatus {
-//   DISPUTE = 'dispute',
-//   PROCESSING = 'processing',
-//   VALIDATED = 'validated',
-//   COMPLETED = 'completed',
-// }
+export type ValidationStatus = typeof validationStatus[number];
 
 @Entity('disputations')
 @Index('ui_disputations_id', ['id'], { unique: true })

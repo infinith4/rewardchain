@@ -18,7 +18,7 @@ export class TaskCommentController { // 変更: クラス名を変更
   }
 
   @Post('create')
-  async createComment(@Body() createTaskCommentDto: TaskCommentDto): Promise<TaskComment> { // 変更: メソッド名を変更
+  async create(@Body() createTaskCommentDto: TaskCommentDto): Promise<TaskComment> { // 変更: メソッド名を変更
     return this.taskCommentService.create(createTaskCommentDto);
   }
 
