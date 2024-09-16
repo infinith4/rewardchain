@@ -2,6 +2,7 @@ import { Controller, Get, Post, Delete, Put, Patch, Param, Body } from '@nestjs/
 import { ProfileService } from '../services/profile.service';
 import { Profile } from "../entities/profiles.entity";
 import { ProfileDto } from "../dtos/profiles.dto";
+import { NotFoundException } from '@nestjs/common';
 
 @Controller('/api/profiles')
 export class ProfileController {
