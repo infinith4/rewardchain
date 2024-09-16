@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { UserDto } from '../dtos/users.dto';
+import { ResponseUserDto } from '../dtos/response_user.dto';
 import { User } from "../entities/users.entity";
 import { Disputation } from '../entities/disputations.entity';
 import { Task } from '../entities/tasks.entity'; // 追加
@@ -35,7 +36,7 @@ export class UserService {
     return this.userRepository.findOne({ where: { id } }) || null;
   }
 
-  async create(userDto: UserDto): Promise<User> {
+  async create(userDto: UserDto): Promise<ResponseUserDto> {
     const user = this.userRepository.create(userDto);
     
     // プロファイルを作成
@@ -48,12 +49,39 @@ export class UserService {
 
     const savedUser = await this.userRepository.save(user);
     // const savedProfile = await this.profileRepository.save(profile);
-    return savedUser;
+    let responseUserDto = new ResponseUserDto();
+    responseUserDto.id = savedUser.id;
+    responseUserDto.user_type = savedUser.user_type;
+    responseUserDto.first_name = savedUser.first_name;
+    responseUserDto.last_name = savedUser.last_name;
+    responseUserDto.username = savedUser.username;
+    responseUserDto.email = savedUser.email;
+    responseUserDto.hashed_password = savedUser.hashed_password;
+    responseUserDto.avatar_url = savedUser.avatar_url;
+    responseUserDto.last_login_at = savedUser.last_login_at;
+    responseUserDto.created_at = savedUser.created_at;
+    responseUserDto.updated_at = savedUser.updated_at;
+
+    return responseUserDto;
   }
 
-  async update(id: number, user: UserDto): Promise<User | null> {
+  async update(id: number, user: UserDto): Promise<ResponseUserDto | null> {
     await this.userRepository.update(id, user);
-    return this.userRepository.findOne({ where: { id } }) || null;
+    let userFindOne = await this.userRepository.findOne({ where: { id } }) || null;
+    let responseUserDto = new ResponseUserDto();
+    responseUserDto.id = userFindOne.id;
+    responseUserDto.user_type = userFindOne.user_type;
+    responseUserDto.first_name = userFindOne.first_name;
+    responseUserDto.last_name = userFindOne.last_name;
+    responseUserDto.username = userFindOne.username;
+    responseUserDto.email = userFindOne.email;
+    responseUserDto.hashed_password = userFindOne.hashed_password;
+    responseUserDto.avatar_url = userFindOne.avatar_url;
+    responseUserDto.last_login_at = userFindOne.last_login_at;
+    responseUserDto.created_at = userFindOne.created_at;
+    responseUserDto.updated_at = userFindOne.updated_at;
+
+    return responseUserDto;
   }
 
   async delete(id: number): Promise<void> {
