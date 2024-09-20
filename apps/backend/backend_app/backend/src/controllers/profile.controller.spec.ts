@@ -51,6 +51,7 @@ describe('ProfileController', () => {
 
   it('findOne method throws not found error when specified user does not exists.', async () => {
     jest.spyOn(mockRepository, 'findOne').mockImplementation(async () => null);
+    console.log(await controller.getProfile(1));
 
     expect.assertions(1);
     await expect(
